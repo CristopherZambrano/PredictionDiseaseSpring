@@ -13,4 +13,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @OneToOne
     User findByEmail(String email);
+
+    @OneToOne
+    User findByDocumento(String documento);
 }

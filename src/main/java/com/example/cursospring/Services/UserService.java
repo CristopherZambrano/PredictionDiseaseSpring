@@ -44,6 +44,26 @@ public class UserService {
     public User getUser(String email){
         return userRepository.findByEmail(email);
     }
+
+    public  User getUserByDoc(String document){
+        return userRepository.findByDocumento(document);
+    }
+
+    public int verifyUserService (int id){
+        patient pat = patientRepository.findByIdUser(id);
+        if(pat==null){
+            doctor doc = doctorRepository.findByIdUser(id);
+            if (doc==null){
+                return 0;
+            }
+            else {
+                return 2;
+            }
+        }
+        else {
+            return 1;
+        }
+    }
     @Transactional
     public void newPatient(User us){
         Calendar cal = Calendar.getInstance();

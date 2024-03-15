@@ -120,6 +120,11 @@ public class LogInController {
         }
     }
 
+    @PostMapping("/tipeUser")
+    public int verifyUser(HttpServletRequest request){
+        return userService.verifyUserService(Integer.parseInt(request.getParameter("id")));
+    }
+
     public boolean checkMail (String email){
         User us = userService.getUser(email);
         if (us==null){
