@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 @Entity
 @Data
@@ -21,7 +22,7 @@ public class User {
     private String email;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "birthdate", nullable = false)
-    private Date fechaNacimiento;
+    private LocalDate fechaNacimiento;
     @Column(name = "password", nullable = false)
     private String password;
     @Column(name = "gender", nullable = false)

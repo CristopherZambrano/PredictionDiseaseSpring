@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -45,8 +46,20 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    public  User getUserByDoc(String document){
-        return userRepository.findByDocumento(document);
+    public Optional<doctor> findDoctor(int id){
+        return doctorRepository.findById(id);
+    }
+
+    public doctor findDoctorforUser(int id){
+        return doctorRepository.findByIdUser(id);
+    }
+
+    public User findByUserforDoctor(int id){
+        return userRepository.findUserById(id);
+    }
+
+    public Optional<User> getUserByDoc(String document){
+        return userRepository.findByDocumentAndIsPatient(document);
     }
 
     public int verifyUserService (int id){

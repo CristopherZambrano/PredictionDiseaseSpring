@@ -14,6 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -26,12 +29,13 @@ public class LogInController {
     @SneakyThrows
     @PostMapping (path = "/registerPatient")
     public Respuesta registerPatient(HttpServletRequest request){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         if (checkMail(request.getParameter("email"))){
             User us = new User();
             us.setNombre(request.getParameter("name"));
             us.setApellido(request.getParameter("lastName"));
-            us.setFechaNacimiento(sdf.parse(request.getParameter("birthday")));
+            LocalDate fecha = LocalDate.parse(request.getParameter("birthday"), formatoFecha);
+            us.setFechaNacimiento(fecha);
             us.setGenero(request.getParameter("gender"));
             us.setCelular(request.getParameter("cellPhone"));
             us.setEmail(request.getParameter("email"));
@@ -63,12 +67,13 @@ public class LogInController {
     @SneakyThrows
     @PostMapping (path = "/registerDoctor")
     public Respuesta registerDoctor(HttpServletRequest request){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         if (checkMail(request.getParameter("email"))){
             User us = new User();
             us.setNombre(request.getParameter("name"));
             us.setApellido(request.getParameter("lastName"));
-            us.setFechaNacimiento(sdf.parse(request.getParameter("birthday")));
+            LocalDate fecha = LocalDate.parse(request.getParameter("birthday"), formatoFecha);
+            us.setFechaNacimiento(fecha);
             us.setGenero(request.getParameter("gender"));
             us.setCelular(request.getParameter("cellPhone"));
             us.setEmail(request.getParameter("email"));

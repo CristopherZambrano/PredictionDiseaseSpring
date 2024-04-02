@@ -1,6 +1,7 @@
 package com.example.cursospring.controller;
+import com.example.cursospring.Model.*;
 
-import com.example.cursospring.Model.Respuesta;
+import com.example.cursospring.Services.DiagnosisService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.catalina.filters.ExpiresFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.cursospring.Services.UserService;
-import com.example.cursospring.Model.User;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/api")
@@ -17,18 +21,100 @@ public class DiagnosisController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    DiagnosisService diagnosisService;
+
     @PostMapping("/findUserDoc")
     Respuesta findPatient (HttpServletRequest request){
         String doc = request.getParameter("Documento");
-        User user = userService.getUserByDoc(doc);
-        if(user==null){
+        Optional<User> user = userService.getUserByDoc(doc);
+        if(user.isPresent()){
+            User us = user.get();
+            return new Respuesta(1,
+                    "Usuario encontrado",
+                    us.toString());
+        }else {
             return new Respuesta(2,
                     "Usuario no encontrado",
                     null);
-        }else {
-            return new Respuesta(1,
-                    "Usuario encontrado",
-                    user.toString());
+        }
+    }
+
+    @PostMapping("/registerDiagnosis")
+    Respuesta saveDiagnosis (HttpServletRequest request){
+        try {
+            Diagnosis diagnosis = new Diagnosis();
+            diagnosis.setDateDiagnosis(LocalDate.now());
+            diagnosis.setDiagnosis(request.getParameter("diagnostico"));
+            doctor docOp = userService.findDoctorforUser(Integer.parseInt(request.getParameter("idUser")));
+            if(docOp != null){
+                diagnosis.setIdDoctor(docOp.getId());
+            }
+            Historial historial=new Historial();
+            historial = diagnosisService.findHistory(Integer.parseInt(request.getParameter("idPatient")));
+            if(historial != null){
+                diagnosis.setIdRecord(historial.getId());
+                Optional<doctor> doc = userService.findDoctor(diagnosis.getIdDoctor());
+                if(doc.isPresent()){
+                    diagnosisService.newDiagnosis(diagnosis);
+                    return new Respuesta(
+                            2,
+                            "Diagnostico registrado",
+                            diagnosis.toString()
+                    );
+                }
+                else {
+                    return new Respuesta(
+                            1,
+                            "Doctor no registrado",
+                            null
+                    );
+                }
+            }
+            else {
+                return new Respuesta(
+                        1,
+                        "Paciente no registrado",
+                        null
+                );
+            }
+
+        }catch (Exception ex){
+            return new Respuesta(
+                    1,
+                    "Error al ingresar diagnostico",
+                    null
+            );
+        }
+    }
+
+    @PostMapping(path = "/findUserforDoctor")
+    Respuesta findDoctor (HttpServletRequest request){
+        User us = userService.findByUserforDoctor(Integer.parseInt(request.getParameter("idDoctor")));
+        if (us==null){
+            return new Respuesta(1,"Doctor no encontrado", "");
+        }
+        else {
+            return new Respuesta(2,"Doctor encontrado", us.getNombre() + us.getApellido());
+        }
+    }
+
+    @PostMapping(path = "/findHistory")
+    Respuesta findDiagnosis(HttpServletRequest request){
+        List<Diagnosis> lista = diagnosisService.listDiagnosis(Integer.parseInt(request.getParameter("idUser")));
+        if(lista.isEmpty()){
+            return new Respuesta(
+                    1,
+                    "No hay diagnosticos de este paciente",
+                    null
+            );
+        }
+        else {
+            return new Respuesta(
+                    2,
+                    "Lista encontrada",
+                    lista.toString()
+            );
         }
     }
 }

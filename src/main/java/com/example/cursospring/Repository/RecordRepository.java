@@ -4,4 +4,6 @@ import com.example.cursospring.Model.Historial;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RecordRepository extends JpaRepository<Historial, Integer> {
+
+    public  Historial findByIdPaciente(int id);
 }
