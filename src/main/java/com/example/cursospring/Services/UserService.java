@@ -46,6 +46,32 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
+    @Transactional
+    public Optional<User> editUser(User user){
+        Optional<User> user1 = userRepository.findById(user.getId());
+        User us = new User();
+        if(user1.isPresent()){
+            us = user1.get();
+            if(!user.getNombre().isEmpty()){
+                us.setNombre(user.getNombre());
+            }
+            if(!user.getApellido().isEmpty()){
+                us.setApellido(user.getApellido());
+            }
+            if(!user.getDireccion().isEmpty()){
+                us.setDireccion(user.getDireccion());
+            }
+            if(!user.getEmail().isEmpty()){
+                us.setEmail(user.getEmail());
+            }
+            if(!user.getCelular().isEmpty()){
+                us.setCelular(user.getCelular());
+            }
+            userRepository.save(us);
+        }
+        return user1;
+    }
+
     public Optional<doctor> findDoctor(int id){
         return doctorRepository.findById(id);
     }

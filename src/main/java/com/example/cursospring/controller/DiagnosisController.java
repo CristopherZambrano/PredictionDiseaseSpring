@@ -24,6 +24,7 @@ public class DiagnosisController {
     @Autowired
     DiagnosisService diagnosisService;
 
+    //Encontrar pacientes por cedula o identificacion
     @PostMapping("/findUserDoc")
     Respuesta findPatient (HttpServletRequest request){
         String doc = request.getParameter("Documento");
@@ -40,6 +41,7 @@ public class DiagnosisController {
         }
     }
 
+    //Registrar Diagnosticos
     @PostMapping("/registerDiagnosis")
     Respuesta saveDiagnosis (HttpServletRequest request){
         try {
@@ -88,6 +90,7 @@ public class DiagnosisController {
         }
     }
 
+    //Encontrar doctor por id de usuario
     @PostMapping(path = "/findUserforDoctor")
     Respuesta findDoctor (HttpServletRequest request){
         User us = userService.findByUserforDoctor(Integer.parseInt(request.getParameter("idDoctor")));
@@ -99,6 +102,7 @@ public class DiagnosisController {
         }
     }
 
+    //Encontrar historial por id del usuario
     @PostMapping(path = "/findHistory")
     Respuesta findDiagnosis(HttpServletRequest request){
         List<Diagnosis> lista = diagnosisService.listDiagnosis(Integer.parseInt(request.getParameter("idUser")));

@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/api")
@@ -128,6 +129,28 @@ public class LogInController {
     @PostMapping("/tipeUser")
     public int verifyUser(HttpServletRequest request){
         return userService.verifyUserService(Integer.parseInt(request.getParameter("id")));
+    }
+
+
+    @PostMapping("/editUser")
+    public Respuesta editUser(HttpServletRequest request){
+        try {
+            User us = new User();
+            us.setId(Integer.parseInt(request.getParameter("id")));
+            us.setNombre(request.getParameter("name"));
+            us.setApellido(request.getParameter("lastName"));
+            us.setDireccion(request.getParameter("address"));
+            us.setEmail(request.getParameter("email"));
+            us.setCelular(request.getParameter("cellPhone"));
+            Optional<User> userOptional = userService.editUser(us);
+            if (userOptional.isPresent()) {
+                return new Respuesta(1, "User changed successfully", userOptional.get().toString());
+            }else {
+                return new Respuesta(2,"Error modifying user",null);
+            }
+        } catch (NumberFormatException e) {
+            return new Respuesta(2,"Error modifying user",e.toString());
+        }
     }
 
     public boolean checkMail (String email){
