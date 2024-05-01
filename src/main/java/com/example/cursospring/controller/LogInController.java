@@ -153,6 +153,11 @@ public class LogInController {
         }
     }
 
+    @PostMapping("changePassword")
+    public String changePassword(HttpServletRequest request){
+        return userService.changePassword(Integer.parseInt(request.getParameter("id")), request.getParameter("password"));
+    }
+
     public boolean checkMail (String email){
         User us = userService.getUser(email);
         if (us==null){

@@ -72,6 +72,24 @@ public class UserService {
         return user1;
     }
 
+    public String changePassword(int id, String password){
+        Optional<User> user1 = userRepository.findById(id);
+        if(user1.isPresent()){
+            User us = user1.get();
+            if (!password.isEmpty()) {
+                us.setPassword(password);
+                userRepository.save(us);
+                return "Succesfully";
+            }
+            else {
+                return "Error";
+            }
+        }
+        else{
+            return "Error";
+        }
+    }
+
     public Optional<doctor> findDoctor(int id){
         return doctorRepository.findById(id);
     }
