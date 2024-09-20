@@ -11,5 +11,6 @@ public interface diagnosisRepository extends JpaRepository<Diagnosis, Integer> {
     @Query("select d " +
             "from User u inner join patient p on p.idUser = u.id " +
             "inner join Historial h on h.idPaciente = p.id inner join Diagnosis d on h.id = d.idRecord where u.id =:idUser")
-    public List<Diagnosis> findDiagnosisByIdUser(int idUser);
+    public List<Diagnosis> findDiagnosisByIdPatient(int idUser);
+
 }

@@ -35,6 +35,6 @@ public class DiagnosisService {
     }
 
     public List<Diagnosis> listDiagnosis(int idPatient){
-        return diagnosisRepository.findDiagnosisByIdUser(idPatient);
+        return diagnosisRepository.findDiagnosisByIdPatient(idPatient);
     }
 }

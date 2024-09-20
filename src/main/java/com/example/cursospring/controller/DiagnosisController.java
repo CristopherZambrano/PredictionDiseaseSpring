@@ -2,6 +2,7 @@ package com.example.cursospring.controller;
 import com.example.cursospring.Model.*;
 
 import com.example.cursospring.Services.DiagnosisService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import org.apache.catalina.filters.ExpiresFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.cursospring.Services.UserService;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -90,6 +92,9 @@ public class DiagnosisController {
         }
     }
 
+    //@PostMapping(path = "/viewDiagnosis")
+
+
     //Encontrar doctor por id de usuario
     @PostMapping(path = "/findUserforDoctor")
     Respuesta findDoctor (HttpServletRequest request){
@@ -104,21 +109,24 @@ public class DiagnosisController {
 
     //Encontrar historial por id del usuario
     @PostMapping(path = "/findHistory")
-    Respuesta findDiagnosis(HttpServletRequest request){
+    List<ListaDiagnosis> findDiagnosis(HttpServletRequest request){
+        List<ListaDiagnosis> listaDiagnoses = new ArrayList<>();
+        ObjectMapper objectMapper = new ObjectMapper();
         List<Diagnosis> lista = diagnosisService.listDiagnosis(Integer.parseInt(request.getParameter("idUser")));
         if(lista.isEmpty()){
-            return new Respuesta(
-                    1,
-                    "No hay diagnosticos de este paciente",
-                    null
-            );
+            return listaDiagnoses;
         }
         else {
-            return new Respuesta(
-                    2,
-                    "Lista encontrada",
-                    lista.toString()
-            );
+            for (Diagnosis list : lista){
+                ListaDiagnosis li = new ListaDiagnosis();
+                User us = userService.findByUserforDoctor(list.getIdDoctor());
+                li.setIdDiagnosis(list.id);
+                li.setDiagnostico(list.diagnosis);
+                li.setFecha(list.dateDiagnosis);
+                li.setDoctor(us.getNombre()+" "+us.getApellido());
+                listaDiagnoses.add(li);
+            }
+            return listaDiagnoses;
         }
     }
 }

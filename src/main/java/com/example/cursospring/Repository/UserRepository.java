@@ -20,8 +20,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @OneToOne
     User findByDocumento(String documento);
 
-    @OneToOne
-    User findUserById(Integer id);
+    @Query("select u from User u inner join doctor d on d.idUser = u.id where  d.id =:id")
+    User findUserById(@Param("id") Integer id);
 
     @Query("select u from User u inner join patient p on p.idUser = u.id where u.documento= :documento")
     Optional<User> findByDocumentAndIsPatient(@Param("documento") String documento);
