@@ -18,7 +18,7 @@ public class User {
     private String nombre;
     @Column(name = "lastName", nullable = false)
     private String apellido;
-    @Column(name = "email", nullable = false,length = 70)
+    @Column(name = "email", nullable = false,length = 70, unique = true)
     private String email;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     @Column(name = "birthdate", nullable = false)
@@ -31,6 +31,6 @@ public class User {
     private String direccion;
     @Column(name = "cellPhone", nullable = false)
     private String celular;
-    @Column (name = "cardId", nullable = false)
+    @Column (name = "cardId", nullable = false, unique = true)
     private String documento;
 }
