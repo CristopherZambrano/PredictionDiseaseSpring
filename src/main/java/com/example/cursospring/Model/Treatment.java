@@ -15,9 +15,8 @@ public class Treatment {
     @Column(name = "id")
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "idDiagnosis")
-    private Diagnosis diagnosis;
+    @Column(name = "idDiagnosis")
+    private Integer diagnosis;
 
     @Column(name = "startDate")
     private Date startDate;
@@ -25,4 +24,7 @@ public class Treatment {
     @Nullable
     @Column(name = "endDate")
     private Date endDate;
+
+    @Column(name = "farmacologico")
+    private boolean farmacologico;
 }
