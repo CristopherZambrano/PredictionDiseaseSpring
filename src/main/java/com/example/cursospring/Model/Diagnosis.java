@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 @Data
 @Entity
@@ -26,4 +28,14 @@ public class Diagnosis {
 
     @Column(name = "idDoctor")
     public int idDoctor;
+
+    public Map<String, Object> toJson() {
+        Map<String, Object> jsonMap = new HashMap<>();
+        jsonMap.put("id", id);
+        jsonMap.put("idRecord", idRecord);
+        jsonMap.put("dateDiagnosis", dateDiagnosis.toString());
+        jsonMap.put("diagnosis", diagnosis);
+        jsonMap.put("idDoctor", idDoctor);
+        return jsonMap;
+    }
 }
