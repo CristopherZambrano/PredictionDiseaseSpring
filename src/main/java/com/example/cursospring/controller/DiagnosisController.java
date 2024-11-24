@@ -64,7 +64,7 @@ public class DiagnosisController {
                     return new Respuesta(
                             2,
                             "Diagnostico registrado",
-                            diagnosis.toJson().toString()
+                            Integer.toString(diagnosis.id)
                     );
                 }
                 else {

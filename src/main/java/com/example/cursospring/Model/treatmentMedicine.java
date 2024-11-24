@@ -15,20 +15,18 @@ public class treatmentMedicine {
     @Column(name = "id")
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "idTreament")
-    private Treatment treatment;
+    @Column(name = "idTreament")
+    private Integer treatment;
 
     @Nullable
-    @ManyToOne
-    @JoinColumn(name = "id_medicine")
-    private Medicine medicine;
+    @Column(name = "id_medicine")
+    private Integer medicine;
 
     @Column(name = "dose")
-    private double dose;
+    private String dose;
 
     @Column(name = "Frequency")
-    private double frequency;
+    private String frequency;
 
     @Column(name = "startDate")
     private Date startDate;
